@@ -180,18 +180,32 @@ async function handleSubmit(e) {
       showToast("success", "¡Formulario Listo!", "Los datos son válidos. Conecta la URL de Google Sheets en app.js para realizar registros reales.");
       resetForm();
     } else {
-      // Real submission
-      const response = await fetch(GOOGLE_SCRIPT_URL, {
-        method: "POST",
-        mode: "no-cors", // Required to bypass Google Apps Script CORS redirection limits
-        headers: {
-          "Content-Type": "text/plain;charset=utf-8"
-        },
-        body: JSON.stringify(data)
-      });
+      // Real submission with AbortController timeout
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 8000); // 8 seconds timeout
       
-      showToast("success", "¡Venta Registrada!", "La información se guardó correctamente en Google Sheets.");
-      resetForm();
+      try {
+        const response = await fetch(GOOGLE_SCRIPT_URL, {
+          method: "POST",
+          mode: "no-cors", // Required to bypass Google Apps Script CORS redirection limits
+          headers: {
+            "Content-Type": "text/plain;charset=utf-8"
+          },
+          signal: controller.signal,
+          body: JSON.stringify(data)
+        });
+        
+        clearTimeout(timeoutId);
+        showToast("success", "¡Venta Registrada!", "La información se guardó correctamente en Google Sheets.");
+        resetForm();
+      } catch (err) {
+        clearTimeout(timeoutId);
+        if (err.name === 'AbortError') {
+          showToast("error", "Tiempo de Espera Agotado", "El servidor tardó demasiado en responder. Verifica que el Web App de Google esté bien publicado.");
+        } else {
+          throw err; // Pass down to the outer catch
+        }
+      }
     }
   } catch (error) {
     console.error("Submission error:", error);
