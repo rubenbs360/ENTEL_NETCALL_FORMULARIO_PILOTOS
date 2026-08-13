@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Netcall - Registro de Ventas de Pilotos</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="styles.css">
+  <!-- Favicon placeholder -->
+  <link rel="icon" type="image/png" href="https://gerencia.proyectrubs.com/favicon.png">
+</head>
+<body>
+
+  <div class="form-container">
+    <!-- Header -->
+    <header class="form-header">
+      <div class="logo-circle">NC</div>
+      <h1>Registro de Ventas de Pilotos</h1>
+      <p class="subtitle">Ingresa la información detallada de la venta para su cuantificación en el dashboard de Gerencia</p>
+    </header>
+
+    <!-- Form -->
+    <form id="pilot-sale-form" novalidate>
+      
+      <!-- Asesor and Date Section -->
+      <div class="form-row">
+        <div class="form-group">
+          <label for="advisor-id">DNI / Usuario Asesor <span class="required">*</span></label>
+          <input type="text" id="advisor-id" placeholder="Ej: 45678912 o NET_JSOLORZANO" required autocomplete="off">
+          <div class="error-msg">Por favor ingresa tu DNI o Usuario de asesor</div>
+        </div>
+        <div class="form-group">
+          <label for="sale-date">Fecha de la Venta <span class="required">*</span></label>
+          <input type="date" id="sale-date" required>
+          <div class="error-msg">Ingresa una fecha de venta válida</div>
+        </div>
+      </div>
+
+      <!-- Order Number -->
+      <div class="form-group">
+        <label for="order-id">Número de Orden <span class="required">*</span></label>
+        <input type="text" id="order-id" placeholder="Ingresa el número de orden (solo números)" required autocomplete="off">
+        <div class="helper-text">Debe coincidir exactamente con el número de orden ingresado en los sistemas.</div>
+        <div class="error-msg">Ingresa un número de orden válido (solo dígitos)</div>
+      </div>
+
+      <!-- Select Pilot -->
+      <div class="form-group">
+        <label>Tipo de Piloto <span class="required">*</span></label>
+        <div class="segmented-control" id="pilot-type-container">
+          <label class="segment-option">
+            <input type="radio" name="pilot-type" value="Base Ventas Ruc 10" checked>
+            <span>Ventas Ruc 10</span>
+          </label>
+          <label class="segment-option">
+            <input type="radio" name="pilot-type" value="Base Whatsapp">
+            <span>Whatsapp</span>
+          </label>
+          <label class="segment-option">
+            <input type="radio" name="pilot-type" value="Base Bot Maker">
+            <span>Bot Maker</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Line Type (Mono / Multi) -->
+      <div class="form-group">
+        <label>Tipo de Venta (Líneas) <span class="required">*</span></label>
+        <div class="segmented-control two-options" id="line-type-container">
+          <label class="segment-option">
+            <input type="radio" name="line-type" value="Monolínea" checked>
+            <span>Monolínea</span>
+          </label>
+          <label class="segment-option">
+            <input type="radio" name="line-type" value="Multilinea">
+            <span>Multilinea</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Client Info Section -->
+      <div class="form-row">
+        <div class="form-group">
+          <label for="doc-type">Tipo de Documento Cliente <span class="required">*</span></label>
+          <select id="doc-type" required>
+            <option value="DNI" selected>DNI</option>
+            <option value="RUC 10">RUC 10 (Persona Natural)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="doc-id">Número de Documento <span class="required">*</span></label>
+          <input type="text" id="doc-id" placeholder="DNI o RUC del cliente" required autocomplete="off">
+          <div class="error-msg">Ingresa un número de documento válido</div>
+        </div>
+      </div>
+
+      <!-- Celular and Producto Section -->
+      <div class="form-row">
+        <div class="form-group">
+          <label for="client-phone">Celular Cliente <span class="required">*</span></label>
+          <input type="tel" id="client-phone" placeholder="Ej: 987654321" required autocomplete="off">
+          <div class="error-msg">Ingresa un número celular válido (9 dígitos, inicia con 9)</div>
+        </div>
+        <div class="form-group">
+          <label for="product-type">Tipo de Producto</label>
+          <select id="product-type">
+            <option value="" disabled selected>Selecciona una opción (opcional)</option>
+            <option value="Portabilidad">Portabilidad</option>
+            <option value="Alta Nueva">Alta Nueva</option>
+            <option value="Renovacion">Renovación</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Comments -->
+      <div class="form-group">
+        <label for="comments">Observaciones / Comentarios</label>
+        <textarea id="comments" rows="3" placeholder="Comentarios adicionales sobre la tramitación (opcional)..."></textarea>
+      </div>
+
+      <!-- Submit Button -->
+      <button type="submit" id="submit-btn" class="submit-btn">
+        <span class="btn-text">Registrar Venta</span>
+        <span class="loader hidden"></span>
+      </button>
+
+    </form>
+
+    <!-- Feedback Message Toast -->
+    <div id="feedback-toast" class="toast hidden">
+      <span class="toast-icon"></span>
+      <div class="toast-content">
+        <h4 class="toast-title"></h4>
+        <p class="toast-desc"></p>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

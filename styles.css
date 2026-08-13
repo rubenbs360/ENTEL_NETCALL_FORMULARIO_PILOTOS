@@ -1,0 +1,338 @@
+/* Modern CSS Variables System */
+:root {
+  --font-main: 'Outfit', sans-serif;
+  
+  /* HSL Color System */
+  --bg-app: hsl(215, 15%, 85%); /* Soft lead gray */
+  --bg-card: hsl(215, 12%, 90%); /* Relaxing gray card background */
+  --text-main: hsl(215, 28%, 15%);
+  --text-muted: hsl(215, 12%, 35%);
+  
+  --primary: hsl(190, 90%, 35%);
+  --primary-hover: hsl(190, 90%, 28%);
+  --primary-light: hsla(190, 90%, 35%, 0.08);
+  
+  --success: hsl(142, 72%, 29%);
+  --success-bg: hsla(142, 72%, 29%, 0.1);
+  --danger: hsl(0, 84%, 44%);
+  --danger-bg: hsla(0, 84%, 44%, 0.08);
+  
+  --border: hsl(215, 12%, 80%);
+  --border-focus: hsl(190, 90%, 35%);
+  
+  --radius-lg: 16px;
+  --radius-md: 10px;
+  --radius-sm: 6px;
+  
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
+  --shadow-md: 0 10px 25px -5px rgba(0,0,0,0.05), 0 8px 10px -6px rgba(0,0,0,0.05);
+}
+
+/* Global Reset */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-main);
+  background-color: var(--bg-app);
+  color: var(--text-main);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem 1rem;
+}
+
+/* Form Container Card */
+.form-container {
+  background-color: var(--bg-card);
+  width: 100%;
+  max-width: 680px;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  padding: 2.5rem;
+  border: 1px solid var(--border);
+}
+
+/* Header */
+.form-header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.logo-circle {
+  width: 52px;
+  height: 52px;
+  background: linear-gradient(135deg, hsl(190, 90%, 40%), hsl(190, 90%, 25%));
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.25rem;
+  font-weight: 800;
+  margin: 0 auto 1rem auto;
+  box-shadow: 0 4px 10px rgba(8, 145, 178, 0.3);
+}
+
+.form-header h1 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.02em;
+}
+
+.form-header .subtitle {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+/* Layout Rows */
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+}
+
+@media (max-width: 580px) {
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+}
+
+/* Form Elements */
+.form-group {
+  margin-bottom: 1.5rem;
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-main);
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+}
+
+.required {
+  color: var(--danger);
+  margin-left: 3px;
+}
+
+input[type="text"],
+input[type="tel"],
+input[type="date"],
+select,
+textarea {
+  font-family: var(--font-main);
+  font-size: 0.95rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background-color: hsl(0, 0%, 100%);
+  color: var(--text-main);
+  outline: none;
+  transition: all 0.2s ease;
+  width: 100%;
+}
+
+input:hover,
+select:hover,
+textarea:hover {
+  border-color: hsl(215, 16%, 70%);
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: var(--border-focus);
+  box-shadow: 0 0 0 3px var(--primary-light);
+}
+
+textarea {
+  resize: vertical;
+}
+
+.helper-text {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-top: 0.4rem;
+}
+
+/* Error Messages */
+.error-msg {
+  color: var(--danger);
+  font-size: 0.8rem;
+  font-weight: 500;
+  margin-top: 0.4rem;
+  display: none;
+  animation: fadeIn 0.2s ease forwards;
+}
+
+.form-group.has-error input,
+.form-group.has-error select,
+.form-group.has-error textarea {
+  border-color: var(--danger);
+  background-color: var(--danger-bg);
+}
+
+.form-group.has-error .error-msg {
+  display: block;
+}
+
+/* Segmented Control Styling */
+.segmented-control {
+  display: flex;
+  background-color: hsl(220, 20%, 94%);
+  padding: 4px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+  width: 100%;
+}
+
+.segment-option {
+  flex: 1;
+  position: relative;
+  cursor: pointer;
+  margin-bottom: 0; /* Override label margin */
+}
+
+.segment-option input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.segment-option span {
+  display: block;
+  text-align: center;
+  padding: 0.65rem 0.5rem;
+  border-radius: calc(var(--radius-md) - 2px);
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.segment-option input[type="radio"]:checked + span {
+  background-color: var(--bg-card);
+  color: var(--text-main);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Submit Button */
+.submit-btn {
+  font-family: var(--font-main);
+  font-size: 1rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, hsl(190, 90%, 38%), hsl(190, 90%, 25%));
+  color: white;
+  border: none;
+  border-radius: var(--radius-md);
+  padding: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-top: 1rem;
+  box-shadow: 0 4px 12px rgba(8, 145, 178, 0.2);
+}
+
+.submit-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(8, 145, 178, 0.35);
+}
+
+.submit-btn:active {
+  transform: translateY(0);
+}
+
+.submit-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* Loader */
+.loader {
+  width: 20px;
+  height: 20px;
+  border: 3px solid rgba(255,255,255,0.3);
+  border-radius: 50%;
+  border-top-color: white;
+  animation: spin 0.8s linear infinite;
+  margin-left: 10px;
+}
+
+/* Animated Success Toast */
+.toast {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  display: flex;
+  align-items: center;
+  background-color: var(--bg-card);
+  border-radius: var(--radius-md);
+  padding: 1rem 1.5rem;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  border-left: 4px solid var(--success);
+  z-index: 1000;
+  max-width: 420px;
+  animation: slideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  transition: all 0.3s ease;
+}
+
+.toast.hidden {
+  display: none;
+}
+
+.toast.error {
+  border-left-color: var(--danger);
+}
+
+.toast-icon {
+  font-size: 1.5rem;
+  margin-right: 1rem;
+}
+
+.toast-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.toast-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  margin-bottom: 0.15rem;
+}
+
+.toast-desc {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+/* Animations */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideIn {
+  from { transform: translateX(100%) translateY(20px); opacity: 0; }
+  to { transform: translateX(0) translateY(0); opacity: 1; }
+}
