@@ -101,8 +101,8 @@ function validateField(id) {
     errorMsg = "Ingresa una fecha de venta válida";
   } 
   else if (id === 'order-id') {
-    isValid = /^\d+$/.test(val);
-    errorMsg = "Ingresa un número de orden válido (solo números)";
+    isValid = /^9\d{8}$/.test(val);
+    errorMsg = "La orden debe iniciar con 9 y tener exactamente 9 dígitos";
   } 
   else if (id === 'doc-id') {
     const docType = document.getElementById("doc-type")?.value || "DNI";
