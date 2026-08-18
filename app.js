@@ -47,6 +47,11 @@ document.addEventListener("DOMContentLoaded", () => {
   initializeDate();
   setupValidationListeners();
   
+  // Request native push notification permission if supported
+  if ("Notification" in window && Notification.permission === "default") {
+    Notification.requestPermission();
+  }
+  
   const form = document.getElementById("pilot-sale-form");
   form.addEventListener("submit", handleSubmit);
 });
@@ -178,6 +183,8 @@ async function handleSubmit(e) {
       // Simulate local demo success when URL is not set
       await new Promise(resolve => setTimeout(resolve, 1000));
       showToast("success", "¡Formulario Listo!", "Los datos son válidos. Conecta la URL de Google Sheets en app.js para realizar registros reales.");
+      playSuccessSound();
+      showPushNotification("¡Formulario Listo!", `Orden ${data.order_id} procesada.`);
       resetForm();
     } else {
       // Real submission with AbortController timeout
@@ -197,6 +204,8 @@ async function handleSubmit(e) {
         
         clearTimeout(timeoutId);
         showToast("success", "¡Venta Registrada!", "La información se guardó correctamente en Google Sheets.");
+        playSuccessSound();
+        showPushNotification("¡Venta Registrada!", `Orden ${data.order_id} de ${data.pilot_type} guardada con éxito.`);
         resetForm();
       } catch (err) {
         clearTimeout(timeoutId);
@@ -255,4 +264,46 @@ function showToast(type, title, desc) {
   toastTimeout = setTimeout(() => {
     toast.classList.add("hidden");
   }, 4000);
+}
+
+// Synthesize a premium double-tone success sound using Web Audio API (no files needed)
+function playSuccessSound() {
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    
+    osc.type = "sine";
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    
+    const now = ctx.currentTime;
+    
+    // Tone 1 (G5)
+    osc.frequency.setValueAtTime(783.99, now);
+    gain.gain.setValueAtTime(0.08, now);
+    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.12);
+    
+    // Tone 2 (C6)
+    osc.frequency.setValueAtTime(1046.50, now + 0.12);
+    gain.gain.setValueAtTime(0.08, now + 0.12);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+    
+    osc.start(now);
+    osc.stop(now + 0.35);
+  } catch (e) {
+    console.error("Audio Context is not enabled by user action:", e);
+  }
+}
+
+// Display native OS push notification
+function showPushNotification(title, body) {
+  if (!("Notification" in window)) return;
+  
+  if (Notification.permission === "granted") {
+    new Notification(title, { 
+      body: body,
+      icon: "https://gerencia.proyectrubs.com/favicon.png"
+    });
+  }
 }

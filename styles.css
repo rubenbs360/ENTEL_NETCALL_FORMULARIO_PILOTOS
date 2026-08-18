@@ -336,3 +336,8 @@ textarea {
   from { transform: translateX(100%) translateY(20px); opacity: 0; }
   to { transform: translateX(0) translateY(0); opacity: 1; }
 }
+
+/* Helper utilities */
+.hidden {
+  display: none !important;
+}
