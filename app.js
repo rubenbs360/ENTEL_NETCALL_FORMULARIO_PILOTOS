@@ -189,7 +189,7 @@ async function handleSubmit(e) {
     } else {
       // Real submission with AbortController timeout
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 8000); // 8 seconds timeout
+      const timeoutId = setTimeout(() => controller.abort(), 20000); // 20 seconds timeout (Google Sheets writing can sometimes take 10-15s)
       
       try {
         const response = await fetch(GOOGLE_SCRIPT_URL, {
@@ -210,9 +210,9 @@ async function handleSubmit(e) {
       } catch (err) {
         clearTimeout(timeoutId);
         if (err.name === 'AbortError') {
-          showToast("error", "Tiempo de Espera Agotado", "El servidor tardó demasiado en responder. Verifica que el Web App de Google esté bien publicado.");
+          showToast("error", "Tiempo de Espera Agotado", "El servidor de Google tardó más de lo esperado. Revisa si tu venta ya se guardó en el Excel antes de volver a intentar.");
         } else {
-          throw err; // Pass down to the outer catch
+          throw err; // Pass down to the outer catch for real network drops
         }
       }
     }
